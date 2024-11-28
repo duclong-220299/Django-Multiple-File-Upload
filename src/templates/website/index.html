@@ -13,6 +13,21 @@
         object-fit: cover;
         object-position: 25% 25%;
     }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
 </style>
 {% endblock %}
 
@@ -66,9 +81,9 @@
         <div class="container">
             <div class="row row-cols-4">
                 {% for photo in gallery %}
-                    {% if ".jpg" in photo.file.url or ".jpeg" in photo.file.url or ".png" in photo.file.url or ".gif" in photo.file.url %}
+                    {% if ".jpg" in photo.download_url or ".jpeg" in photo.download_url or ".png" in photo.download_url or ".gif" in photo.download_url %}
                     <div class="col p-3">
-                        <img class="cropped-img" src="{{photo.file.url}}" />
+                        <img class="cropped-img" src="{{photo.download_url}}" />
                     </div>
                     {% endif %}
                 {% endfor %}
@@ -78,9 +93,26 @@
 </div>
 <div class="container px-4 py-5" id="storage">
     <h2 class="pb-2 border-bottom">Storage</h2>
-    {% for photo in gallery %}
-    <p style="margin:0;"><a href="{{photo.file.url}}" target="_blank">{{photo.file.name}}</a></p>
-    {% endfor %}
+    <body>
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Download</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in gallery %}
+            <tr>
+              <td>{{file.file_name}}</td>
+              <td><a href="{{file.download_url}}" download>T i v </a></td>
+              <td><a href="{{file.delete_url}}" class="delete-link">X o</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </body>
 </div>
 {% endblock %}
 
@@ -127,7 +159,7 @@
             }
         };
         
-        xhr.open("POST", "{% url "website:index" %}", true);
+        xhr.open("POST", "{% url 'website:index' %}", true);
         xhr.send(formData);
     };
 </script>
