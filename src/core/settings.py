@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
-from django.contrib.messages import constants as messages
-from decouple import config
+from django.contrib.messages import constants as messages # type: ignore
+from decouple import config # type: ignore
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
