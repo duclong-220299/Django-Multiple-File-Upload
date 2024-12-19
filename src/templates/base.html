@@ -28,9 +28,9 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="{% url 'website:index' %}" class="nav-link px-2 text-warning">Django3.2 Template</a>
                     </li>
-                    <li><a href="#form" class="nav-link px-2 text-white ">Form</a></li>
-                    <li><a href="#gallery" class="nav-link px-2 text-white ">Gallery</a></li>
-                    <li><a href="#storage" class="nav-link px-2 text-white">Storage</a></li>
+                    <li><a class="nav-link px-2 text-white" onclick="scrollToAnchor('#form')">Form</a></li>
+                    <li><a class="nav-link px-2 text-white" onclick="scrollToAnchor('#gallery')">Gallery</a></li>
+                    <li><a class="nav-link px-2 text-white" onclick="scrollToAnchor('#storage')">Storage</a></li>
                 </ul>
 
 
@@ -60,6 +60,19 @@
     crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    function scrollToAnchor(anchor) {
+        console.log(`Scrolling to anchor: ${anchor}`);
+        var headerHeight = document.querySelector('header').offsetHeight;
+        console.log(`Header height: ${headerHeight}px`);
+        var anchorElement = document.querySelector(anchor);
+        console.log(`Anchor element: ${anchorElement.tagName}`);
+        var anchorTop = anchorElement.offsetTop - headerHeight ;
+        console.log(`Scrolling to position: ${anchorTop}px`);
+        window.scrollTo({ top: anchorTop, behavior: 'smooth' });
+        console.log(`Scrolling complete`);
+    }
+</script>
 {% block extra_js %}
 {% endblock %}
 
