@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <style>
     .logo {
         -webkit-filter: grayscale(100%);
@@ -105,9 +106,9 @@
           <tbody>
             {% for file in gallery %}
             <tr>
-              <td>{{file.file_name}}</td>
-              <td><a href="{{file.download_url}}" download>T i v </a></td>
-              <td><a href="{{file.delete_url}}" class="delete-link">X o</a></td>
+                <td>{{file.file_name}}</td>
+                <td><a href="{{file.download_url}}" download><i class="fas fa-download"></i></a></td>
+                <td><a href="{{file.delete_url}}" class="delete-link"><i class="fas fa-trash"></i></a></td>
             </tr>
             {% endfor %}
           </tbody>

@@ -1,10 +1,10 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView, CreateView
+from django.views.generic import CreateView
 from .forms import PhotoForm
 from .models import Photo
-
-# Create your views here.
 
 
 class UploadView(CreateView):
@@ -17,7 +17,7 @@ class UploadView(CreateView):
         gallery = [
             {
                 "file_name": photo.file.name.replace("gallery/", ""),
-                "download_url": photo.file.url,
+                "download_url": f'/download/{photo.file.name.replace("gallery/", "")}',
                 "delete_url": f"/api/photo/delete/{photo.pk}",
             }
             for photo in Photo.objects.all()
@@ -39,3 +39,11 @@ class UploadView(CreateView):
             return HttpResponseRedirect(self.request.path_info)
         else:
             return self.form_invalid(form)
+
+
+def download(request, file_name: str) -> HttpResponse:
+    response = HttpResponse()
+    del response["Content-Type"]
+    response["X-Accel-Redirect"] = f"/internal/{file_name}"
+    response["Content-Disposition"] = f"attachment; filename={file_name}"
+    return response

@@ -1,8 +1,21 @@
-version: "3.9"
-
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: nginx-multiple-upload
+    restart: always
+    ports:
+      - 5055:80
+    volumes:
+      - ./conf/.htpasswd:/conf/.htpasswd
+      - ./logs:/logs
+      - ./src/media/gallery:/internal
+    networks:
+      - server
+
   db:
-    container_name: db
+    container_name: db-multiple-upload
     image: postgres:alpine
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
@@ -15,16 +28,16 @@ services:
       - PGDB_VENDOR=postgres
       - PGDATA=/var/lib/postgresql/data
     restart: always
+    networks:
+      - server
 
   web:
     build:
       context: .
-    container_name: backend
+    container_name: web-multiple-upload
     command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./src:/usr/src/app
-    ports:
-      - 5055:8000
     env_file:
       - .env
     environment:
@@ -37,3 +50,8 @@ services:
     restart: always
     depends_on:
       - db
+    networks:
+      - server
+
+networks:
+  server:
